@@ -48,7 +48,7 @@ int ExeCmd(void* jobs, char* lineSize, char* cmdString)
 
 		}
 		else 
-		{std::cout << prev_pwd << std::endl;
+		{
 			illegal_cmd = true;
 		}
 	} 
@@ -186,7 +186,7 @@ int ExeComp(char* lineSize)
     if ((strstr(lineSize, "|")) || (strstr(lineSize, "<")) || (strstr(lineSize, ">")) || (strstr(lineSize, "*")) || (strstr(lineSize, "?")) || (strstr(lineSize, ">>")) || (strstr(lineSize, "|&")))
     {
 		// Add your code here (execute a complicated command)
-					
+				
 		/* 
 		your code
 		*/

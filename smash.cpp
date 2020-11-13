@@ -47,13 +47,15 @@ int main(int argc, char **argv)
 	
     	while (1)
     	{
-		std::cout << "smash > " << std::endl;
+		std::cout << "smash > ";
 		fgets(lineSize, MAX_LINE_SIZE, stdin);
 		strcpy(cmdString, lineSize);    	
 		cmdString[strlen(lineSize)-1]='\0';
 
 					// perform a complicated Command 
-
+/* 		std::cout << "line_size " << lineSize << std::endl;
+		std::cout << "cmd string " << cmdString << std::endl;
+		std::cout << "line_size " << lineSize << std::endl; */
 		if(!ExeComp(lineSize)) continue; 
 
 					// background command
