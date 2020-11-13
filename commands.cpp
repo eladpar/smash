@@ -6,6 +6,7 @@
 // Description: interperts and executes built-in commands
 // Parameters: pointer to jobs, command string
 // Returns: 0 - success,1 - failure
+
 //**************************************************************************************
 int ExeCmd(void* jobs, char* lineSize, char* cmdString)
 {
@@ -14,7 +15,8 @@ int ExeCmd(void* jobs, char* lineSize, char* cmdString)
 	char pwd[MAX_LINE_SIZE];
 	char* delimiters = " \t\n";  
 	int i = 0, num_arg = 0;
-	bool illegal_cmd = FALSE; // illegal command
+	bool illegal_cmd = false; // illegal command
+	
     	cmd = strtok(lineSize, delimiters);
 	if (cmd == NULL)
 		return 0; 
@@ -33,55 +35,105 @@ int ExeCmd(void* jobs, char* lineSize, char* cmdString)
 /*************************************************/
 	if (!strcmp(cmd, "cd") ) 
 	{
-		
+
+		if (num_arg == 1)
+		{
+			if (prev_pwd.empty() == true)
+			{
+				//First time changing directory --> CHANGE DIR
+				
+			}
+			std::cout << prev_pwd << std::endl;
+
+
+		}
+		else 
+		{std::cout << prev_pwd << std::endl;
+			illegal_cmd = true;
+		}
 	} 
 	
 	/*************************************************/
-	else if (!strcmp(cmd, "pwd")) 
+	// else if (!strcmp(cmd, "pwd")) 
+	if (!strcmp(cmd, "pwd"))
 	{
-		
+		if ( num_arg== 0 )
+		{
+			char tmp [MAX_LINE_SIZE];
+			getcwd(tmp,MAX_LINE_SIZE);
+			if (tmp == NULL)
+				printf("perror/n"); // @TODO PERROR
+			else
+			{
+				std::cout << tmp << std::endl;
+			}			
+		}
+
+		else
+		{
+			illegal_cmd = true;
+		}
 	}
 	
-	/*************************************************/
-	else if (!strcmp(cmd, "mkdir"))
-	{
+	// /*************************************************/
+	// else if (!strcmp(cmd, "mkdir"))
+	// {
  		
-	}
-	/*************************************************/
+	// }
+	// /*************************************************/
 	
-	else if (!strcmp(cmd, "jobs")) 
-	{
+	// else if (!strcmp(cmd, "jobs")) 
+	// {
  		
-	}
-	/*************************************************/
+	// }
+	// /*************************************************/
 	else if (!strcmp(cmd, "showpid")) 
 	{
-		
+		if (num_arg == 0)
+		{
+			int pid =  getpid();
+			std::cout << "smash pid is " << pid <<  std::endl ;
+		}
+		else 
+		{
+			illegal_cmd = true;
+		}
 	}
-	/*************************************************/
-	else if (!strcmp(cmd, "fg")) 
-	{
+	// /*************************************************/
+	// else if (!strcmp(cmd, "fg")) 
+	// {
 		
-	} 
-	/*************************************************/
-	else if (!strcmp(cmd, "bg")) 
-	{
+	// } 
+	// /*************************************************/
+	// else if (!strcmp(cmd, "bg")) 
+	// {
   		
-	}
-	/*************************************************/
+	// }
+	// /*************************************************/
 	else if (!strcmp(cmd, "quit"))
 	{
-   		
+   		int res = kill((int)getpid(), SIGKILL);
+
+		// /* cases when error  */
+		// switch (res)
+		// {
+		// case EINVAL:
+		// 	/* code */
+		// 	break;
+		
+		// default:
+		// 	break;
+		// }
 	} 
-	/*************************************************/
+	// /*************************************************/
 	else // external command
 	{
  		ExeExternal(args, cmdString);
 	 	return 0;
 	}
-	if (illegal_cmd == TRUE)
+	if (illegal_cmd == true)
 	{
-		printf("smash error: > \"%s\"\n", cmdString);
+		std::cout << "smash error: > \"" << cmdString << "\"" <<  std::endl ;
 		return 1;
 	}
     return 0;
@@ -115,7 +167,7 @@ void ExeExternal(char *args[MAX_ARG], char* cmdString)
 			
 			default:
                 	// Add your code here
-					
+					std::cout << "got to exee xternal " <<  std::endl ;
 					/* 
 					your code
 					*/

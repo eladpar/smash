@@ -1,6 +1,7 @@
 # Makefile for the smash program
-CC = gcc
-CFLAGS = -g -Wall
+CC = g++
+# CFLAGS = -g -Wall
+CFLAGS =-std=c++11 -Wall -Werror -pedantic-errors -DNDEBUG
 CCLINK = $(CC)
 OBJS = smash.o commands.o signals.o
 RM = rm -f
@@ -8,9 +9,9 @@ RM = rm -f
 smash: $(OBJS)
 	$(CCLINK) -o smash $(OBJS)
 # Creating the object files
-commands.o: commands.c commands.h
-smash.o: smash.c commands.h
-signals.o: signals.c signals.h
+commands.o: commands.cpp commands.h
+smash.o: smash.cpp commands.h
+signals.o: signals.cpp signals.h
 # Cleaning old files before new make
 clean:
 	$(RM) $(TARGET) *.o *~ "#"* core.*
