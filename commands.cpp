@@ -1,6 +1,23 @@
 //		commands.c
 //********************************************
 #include "commands.h"
+
+//********************************************
+// function name: printhistory
+// Description: prints stl contianer queue made from strings
+// Parameters: the container
+
+//**************************************************************************************
+void printhistory (std::queue <std::string> hy)
+{
+	while (!hy.empty())
+	{
+		std::cout << hy.front() << std::endl;
+		hy.pop();
+	}
+}
+
+
 //********************************************
 // function name: ExeCmd
 // Description: interperts and executes built-in commands
@@ -8,7 +25,7 @@
 // Returns: 0 - success,1 - failure
 
 //**************************************************************************************
-int ExeCmd(void* jobs, char* lineSize, char* cmdString)
+int ExeCmd(void* jobs, char* lineSize, char* cmdString, std::queue <std::string> &histo)
 {
 	char* cmd; 
 	char* args[MAX_ARG];
@@ -38,12 +55,12 @@ int ExeCmd(void* jobs, char* lineSize, char* cmdString)
 
 		if (num_arg == 1)
 		{
-			if (prev_pwd.empty() == true)
-			{
-				//First time changing directory --> CHANGE DIR
+			// if (prev_pwd.empty() == true)
+			// {
+			// 	//First time changing directory --> CHANGE DIR
 				
-			}
-			std::cout << prev_pwd << std::endl;
+			// }
+			//std::cout << prev_pwd << std::endl;
 
 
 		}
@@ -81,6 +98,19 @@ int ExeCmd(void* jobs, char* lineSize, char* cmdString)
  		
 	// }
 	// /*************************************************/
+	// /*************************************************/
+	else if (!strcmp(cmd, "history"))
+	{
+ 		if (num_arg == 0)
+		{
+			printhistory(histo);
+		}
+		else 
+		{
+			illegal_cmd = true;
+		}
+	}
+	/*************************************************/
 	
 	// else if (!strcmp(cmd, "jobs")) 
 	// {

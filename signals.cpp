@@ -7,3 +7,6 @@
    Synopsis: handle the Control-C */
 #include "signals.h"
 
+// SIGTERM 
+
+// funt ctrl callocsystemcall(sigkill)
