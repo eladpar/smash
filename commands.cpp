@@ -71,6 +71,39 @@ int ExeCmd(void* jobs, char* lineSize, char* cmdString, std::queue <std::string>
 	} 
 	
 	/*************************************************/
+
+	/*************************************************/
+	if (!strcmp(cmd, "diff") ) 
+	{
+
+		if (num_arg == 2)
+		{
+			FILE *f1 = fopen(args[1], "r");
+			if (!f1) {  perror(args[1]); exit(EXIT_FAILURE);  };
+			FILE *f2 = fopen(args[2], "r");
+			if (!f2) {  perror(args[2]); exit(EXIT_FAILURE);  };
+			bool samefile = true;
+			int c1, c2;
+			while (samefile && ((c1 = getc(f1)) != EOF) || ((c2 = getc(f2)) != EOF))
+			{
+			if (c1 != c2) samefile = false;
+			}
+			fclose (f1), fclose (f2);
+			
+			if (samefile)
+				std::cout << "0" << std::endl; // if files are the same print 0
+			else
+				std::cout << "1" << std::endl;//bad - the files are different
+
+			
+		}
+		else 
+		{
+			illegal_cmd = true;
+		}
+	} 
+	
+	/*************************************************/
 	// else if (!strcmp(cmd, "pwd")) 
 	if (!strcmp(cmd, "pwd"))
 	{
