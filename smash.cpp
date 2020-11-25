@@ -10,13 +10,18 @@ main file. This file contains the main function of smash
 #include <queue>
 #include "commands.h"
 #include "signals.h"
+#include "data.hpp"  
 #define MAX_LINE_SIZE 80
 #define MAXARGS 20
-#define MAX_HISTORY 3
+#define MAX_HISTORY 3 // TODO CHANGE TO 50
 
 char* L_Fg_Cmd;
 void* jobs = NULL; //This represents the list of jobs. Please change to a preferred type (e.g array of char*)
 char lineSize[MAX_LINE_SIZE]; 
+
+data dat;
+
+
 
 //********************************************
 // function name: insertcmd
@@ -29,8 +34,10 @@ void insertcmd(std::queue <std::string> &his, char * command)
 	{
 		his.pop();
 	}
-	his.push(command);// TODO "" or error?
-}//  
+
+	his.push(command); // TODO "" or error?
+}
+
 //**************************************************************************************
 // function name: main
 // Description: main function of smash. get command from user and calls command functions
@@ -54,7 +61,6 @@ int main(int argc, char **argv)
 	/************************************/
 	// Init globals 
 	// std::string prev_pwd;
-	std::queue <std::string> history;
 	
 	L_Fg_Cmd =(char*)malloc(sizeof(char)*(MAX_LINE_SIZE+1));
 	if (L_Fg_Cmd == NULL) 
@@ -80,9 +86,9 @@ int main(int argc, char **argv)
 
 					// built in commands
 					// e.g pwd cd ....
-		ExeCmd(jobs, lineSize, cmdString, history);
+		ExeCmd(jobs, lineSize, cmdString, dat);
 		
-		insertcmd(history, cmdString);
+		insertcmd(dat.history, cmdString);
 		/* initialize for next line read*/
 		lineSize[0]='\0';
 		cmdString[0]='\0';

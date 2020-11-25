@@ -1,12 +1,10 @@
 //		commands.c
 //********************************************
 #include "commands.h"
-
 //********************************************
 // function name: printhistory
 // Description: prints stl contianer queue made from strings
 // Parameters: the container
-
 //**************************************************************************************
 void printhistory (std::queue <std::string> hy)
 {
@@ -14,7 +12,7 @@ void printhistory (std::queue <std::string> hy)
 	{
 		std::cout << hy.front() << std::endl;
 		hy.pop();
-	}
+	} 
 }
 
 
@@ -23,9 +21,8 @@ void printhistory (std::queue <std::string> hy)
 // Description: interperts and executes built-in commands
 // Parameters: pointer to jobs, command string
 // Returns: 0 - success,1 - failure
-
 //**************************************************************************************
-int ExeCmd(void* jobs, char* lineSize, char* cmdString, std::queue <std::string> &histo)
+int ExeCmd(void* jobs, char* lineSize, char* cmdString, data &dat)
 {
 	char* cmd; 
 	char* args[MAX_ARG];
@@ -50,25 +47,33 @@ int ExeCmd(void* jobs, char* lineSize, char* cmdString, std::queue <std::string>
 // ARE IN THIS CHAIN OF IF COMMANDS. PLEASE ADD
 // MORE IF STATEMENTS AS REQUIRED
 /*************************************************/
-	if (!strcmp(cmd, "cd") ) 
-	{
+	// if (!strcmp(cmd, "cd") ) 
+	// {			
+	// 	std::string path (cmdString+3);
+	// 	std::string tmp;
+	// 	getcwd(tmp,MAX_LINE_SIZE);
 
-		if (num_arg == 1)
-		{
-			// if (prev_pwd.empty() == true)
-			// {
-			// 	//First time changing directory --> CHANGE DIR
-				
-			// }
-			//std::cout << prev_pwd << std::endl;
+	// 	//if(args[1]=='-')
+	// 	if(path == '-')
+	// 	{
+	// 		if (dat.prev_pwd.empty() == true)
+	// 		{
+	// 			std::cout << dat.prev_pwd << std::end;
+	// 			chdir(dat.prev_pwd);
+	// 			dat.prev_pwd = tmp;
+	// 		}
+	// 	}
 
+	// 	if(chdir(path) == 0)
+	// 	{
+	// 		dat.prev_pwd = tmp;
+	// 	}
+	// 	else
+	// 	{
+	// 		std::cout << "smash error: > \"" << path << "\"- No such file or directory" << endl;
+	// 	}
+	// }	
 
-		}
-		else 
-		{
-			illegal_cmd = true;
-		}
-	} 
 	
 	/*************************************************/
 	// else if (!strcmp(cmd, "pwd")) 
@@ -79,7 +84,7 @@ int ExeCmd(void* jobs, char* lineSize, char* cmdString, std::queue <std::string>
 			char tmp [MAX_LINE_SIZE];
 			getcwd(tmp,MAX_LINE_SIZE);
 			if (tmp == NULL)
-				printf("perror/n"); // @TODO PERROR
+				printf("perror/n"); // TODO PERROR
 			else
 			{
 				std::cout << tmp << std::endl;
@@ -103,7 +108,7 @@ int ExeCmd(void* jobs, char* lineSize, char* cmdString, std::queue <std::string>
 	{
  		if (num_arg == 0)
 		{
-			printhistory(histo);
+			printhistory(dat.history); // TODO only add history last?// and shoud "" be history?
 		}
 		else 
 		{

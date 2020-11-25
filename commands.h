@@ -11,6 +11,8 @@
 #include <iostream>
 #include <string>
 #include <queue>
+#include "data.hpp" 
+
 
 #define MAX_LINE_SIZE 80
 #define MAX_ARG 20
@@ -18,8 +20,11 @@
 // typedef enum { FALSE , TRUE } bool;
 int ExeComp(char* lineSize);
 int BgCmd(char* lineSize, void* jobs);
-int ExeCmd(void* jobs, char* lineSize, char* cmdString, std::queue <std::string> &histo);
+int ExeCmd(void* jobs, char* lineSize, char* cmdString, data& dat);
 void ExeExternal(char *args[MAX_ARG], char* cmdString);
+
+// class data;
+
 // Globals to be reconized in commands.cpp
 // extern std::queue <std::string> history;
 // extern std::string prev_pwd;
