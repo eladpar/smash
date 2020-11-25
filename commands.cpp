@@ -74,6 +74,43 @@ int ExeCmd(void* jobs, char* lineSize, char* cmdString, data &dat)
 	// 	}
 	// }	
 
+/*************************/
+	if (!strcmp(cmd, "cd") ) 
+	{
+		std::string path (cmdString+3);
+	
+		char* curr;
+		int flag=0;
+		
+		curr = new char [MAX_LINE_SIZE];
+		getcwd(curr,MAX_LINE_SIZE);
+		
+		std::string curr_string (curr);
+
+		if(path == "-")
+		{
+		
+			std::cout << dat.prev_pwd << std::endl;			
+
+			if (dat.prev_pwd.empty() == false)
+			{
+				std::cout << dat.prev_pwd << std::endl;			
+				chdir(&dat.prev_pwd[0]);
+				dat.prev_pwd = curr_string;
+			}
+		}
+		else
+		{
+			flag = chdir(&path[0]);
+			if(flag != 0)
+			{
+			 	std::cout << "smash error: > \"" << path << "\"- No such file or directory" << std::endl;
+				return 1;
+			}
+			dat.prev_pwd = curr_string;
+		}
+		
+	}
 	
 	/*************************************************/
 
