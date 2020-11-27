@@ -22,7 +22,7 @@ void printhistory (std::queue <std::string> hy)
 // Parameters: pointer to jobs, command string
 // Returns: 0 - success,1 - failure
 //**************************************************************************************
-int ExeCmd(void* jobs, char* lineSize, char* cmdString, data &dat)
+int ExeCmd(char* lineSize, char* cmdString, data &dat)
 {
 	char* cmd; 
 	char* args[MAX_ARG];
@@ -75,7 +75,7 @@ int ExeCmd(void* jobs, char* lineSize, char* cmdString, data &dat)
 	// }	
 
 /*************************/
-	if (!strcmp(cmd, "cd") ) 
+if (!strcmp(cmd, "cd") ) 
 	{
 		std::string path (cmdString+3);
 	
@@ -109,13 +109,13 @@ int ExeCmd(void* jobs, char* lineSize, char* cmdString, data &dat)
 			}
 			dat.prev_pwd = curr_string;
 		}
-		
+		return 0;
 	}
 	
 	/*************************************************/
 
 	/*************************************************/
-	if (!strcmp(cmd, "diff") ) 
+	if (!strcmp(cmd, "diff") )  //TODO diff exieted 
 	{
 
 		if (num_arg == 2)
@@ -179,6 +179,7 @@ int ExeCmd(void* jobs, char* lineSize, char* cmdString, data &dat)
  		if (num_arg == 0)
 		{
 			printhistory(dat.history); // TODO only add history last?// and shoud "" be history?
+			return 0;
 		}
 		else 
 		{
@@ -233,7 +234,7 @@ int ExeCmd(void* jobs, char* lineSize, char* cmdString, data &dat)
 	// /*************************************************/
 	else // external command
 	{
- 		ExeExternal(args, cmdString);
+ 		ExeExternal(args, cmdString, dat);
 	 	return 0;
 	}
 	if (illegal_cmd == true)
@@ -249,12 +250,15 @@ int ExeCmd(void* jobs, char* lineSize, char* cmdString, data &dat)
 // Parameters: external command arguments, external command string
 // Returns: void
 //**************************************************************************************
-void ExeExternal(char *args[MAX_ARG], char* cmdString)
+void ExeExternal(char *args[MAX_ARG], char* cmdString, data &dat)
 {
 	int pID;
-    	switch(pID = fork()) 
+    switch(pID = fork()) 
 	{
     		case -1: 
+			{
+
+			}
 					// Add your code here (error)
 					
 					/* 
@@ -262,20 +266,34 @@ void ExeExternal(char *args[MAX_ARG], char* cmdString)
 					*/
         	case 0 :
                 	// Child Process
-               		setpgrp();
-					
-			        // Add your code here (execute an external command)
-					
-					/* 
-					your code
-					*/
-			
+					{
+						setpgrp();
+						int pid2 =  getpid();
+						// std::cout << "smash 0 pid is " << pid2 <<  std::endl ;
+						// std::cout << "whiiiiiii im external " <<  std::endl ;
+						if (execvp(args[0], args) == -1) 
+						{	
+							perror(NULL); 
+							exit(-1);
+						}
+
+						break;
+					}
 			default:
                 	// Add your code here
-					std::cout << "got to exee xternal " <<  std::endl ;
-					/* 
-					your code
-					*/
+					{
+						// int pid3 =  getpid();
+						// std::cout << "smash def pid is " << pid3 <<  std::endl ;
+						 std::cout << "got to exee xternal " <<  std::endl ;
+						dat.GPid = pID;
+						// ttime=time(NULL);
+						waitpid(pID, NULL, WUNTRACED);
+						dat.GPid = -1;
+						/* 
+						}
+						your code
+						*/
+					}
 	}
 }
 //**************************************************************************************
@@ -291,7 +309,7 @@ int ExeComp(char* lineSize)
     if ((strstr(lineSize, "|")) || (strstr(lineSize, "<")) || (strstr(lineSize, ">")) || (strstr(lineSize, "*")) || (strstr(lineSize, "?")) || (strstr(lineSize, ">>")) || (strstr(lineSize, "|&")))
     {
 		// Add your code here (execute a complicated command)
-				
+			
 		/* 
 		your code
 		*/
@@ -304,7 +322,7 @@ int ExeComp(char* lineSize)
 // Parameters: command string, pointer to jobs
 // Returns: 0- BG command -1- if not
 //**************************************************************************************
-int BgCmd(char* lineSize, void* jobs)
+int BgCmd(char* lineSize, data &dat)
 {
 
 	char* Command;

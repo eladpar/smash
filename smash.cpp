@@ -16,7 +16,7 @@ main file. This file contains the main function of smash
 #define MAX_HISTORY 3 // TODO CHANGE TO 50
 
 char* L_Fg_Cmd;
-void* jobs = NULL; //This represents the list of jobs. Please change to a preferred type (e.g array of char*)
+// void* jobs = NULL; //This represents the list of jobs. Please change to a preferred type (e.g array of char*)
 char lineSize[MAX_LINE_SIZE]; 
 
 data dat;
@@ -45,8 +45,10 @@ void insertcmd(std::queue <std::string> &his, char * command)
 int main(int argc, char **argv)
 {
     char cmdString[MAX_LINE_SIZE]; 	   
-
-	
+	// dat.jobs = new std::string[10];
+	// dat.jobs[0] = "acca";
+	// dat.jobs[1] = "dafd";
+	// std::cout << dat.jobs[0] << dat.jobs[1] << std::endl;
 	//signal declaretions
 	//NOTE: the signal handlers and the function/s that sets the handler should be found in siganls.c
 	 /* add your code here */
@@ -82,11 +84,11 @@ int main(int argc, char **argv)
 
 					// background command
 			
-	 	if(!BgCmd(lineSize, jobs)) continue; 
+	 	if(!BgCmd(lineSize, dat)) continue; 
 
 					// built in commands
 					// e.g pwd cd ....
-		ExeCmd(jobs, lineSize, cmdString, dat);
+		ExeCmd(lineSize, cmdString, dat);
 		
 		insertcmd(dat.history, cmdString);
 		/* initialize for next line read*/

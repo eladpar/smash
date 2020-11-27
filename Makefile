@@ -1,7 +1,7 @@
 # Makefile for the smash program
 CC = g++
 # CFLAGS = -g -Wall
-CFLAGS =-std=c++11 -Wall -Werror -pedantic-errors -DNDEBUG -g
+CFLAGS =-std=c++11 -Wall -Werror -pedantic-errors -DNDEBUG 
 CCLINK = $(CC)
 OBJS = smash.o commands.o signals.o data.o
 RM = rm -f

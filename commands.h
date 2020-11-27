@@ -11,6 +11,7 @@
 #include <iostream>
 #include <string>
 #include <queue>
+
 #include "data.hpp" 
 
 
@@ -19,9 +20,9 @@
 
 // typedef enum { FALSE , TRUE } bool;
 int ExeComp(char* lineSize);
-int BgCmd(char* lineSize, void* jobs);
-int ExeCmd(void* jobs, char* lineSize, char* cmdString, data& dat);
-void ExeExternal(char *args[MAX_ARG], char* cmdString);
+int BgCmd(char* lineSize, data &dat);
+int ExeCmd(char* lineSize, char* cmdString, data& dat);
+void ExeExternal(char *args[MAX_ARG], char* cmdString, data &dat);
 
 // class data;
 
