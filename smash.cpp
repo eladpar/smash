@@ -22,7 +22,6 @@ char lineSize[MAX_LINE_SIZE];
 data dat;
 
 
-
 //********************************************
 // function name: insertcmd
 // Description: insert command into history while checking queue container size if big then remove oldest command
@@ -62,8 +61,10 @@ int main(int argc, char **argv)
 
 	/************************************/
 	// Init globals 
-	// std::string prev_pwd;
 	
+	// std::string prev_pwd;
+	dat.job_num = 0;
+
 	L_Fg_Cmd =(char*)malloc(sizeof(char)*(MAX_LINE_SIZE+1));
 	if (L_Fg_Cmd == NULL) 
 			exit (-1); 
@@ -80,7 +81,7 @@ int main(int argc, char **argv)
 /* 		std::cout << "line_size " << lineSize << std::endl;
 		std::cout << "cmd string " << cmdString << std::endl;
 		std::cout << "line_size " << lineSize << std::endl; */
-		if(!ExeComp(lineSize)) continue; 
+		// if(!ExeComp(lineSize)) continue; 
 
 					// background command
 			

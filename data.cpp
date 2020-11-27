@@ -9,3 +9,13 @@ data::~data()
 {
 
 }
+
+job::job()
+{
+
+}
+
+job::~job()
+{
+
+}

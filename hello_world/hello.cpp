@@ -3,14 +3,16 @@ using namespace std;
   
 int main(int argc, char** argv) 
 { 
-    cout << "Hello World! " << endl;
-    cout << "You have entered " << argc 
-         << " arguments:" << "\n"; 
-  
-    for (int i = 0; i < argc; ++i) 
-        cout << argv[i] << "\n"; 
-  
-    return 0; 
+	while(1){
+		// cout << "Hello World! " << endl;
+	}
+		// cout << "You have entered " << argc 
+		// 		<< " arguments:" << "\n"; 
+
+		// for (int i = 0; i < argc; ++i) 
+		// 	cout << argv[i] << "\n"; 
+
+		return 0; 
 } 
 // #include <iostream> 
 // #include <list> 

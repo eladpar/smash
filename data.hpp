@@ -1,19 +1,20 @@
-#include <stdlib.h>
+#include <cstdlib>
+#include <list>
 #include <string>
 #include <queue>
-#include <list>
+#include <vector>
 
 #pragma once
 
 class job
 {
-private:
-	/* data */
 public:
-	job(/* args */);
+	job();
 	std::string name;
-	int time;
+	time_t create_time;
 	int pid;
+	int jobid;
+	bool stopped; // intialize to stopped
 	~job();
 };
 
@@ -23,8 +24,9 @@ class data
 public:
 	data();
 	std::queue <std::string> history;
-	// list <job> jobs;
+	std::list <job> jobs;
 	std::string prev_pwd;
+	int job_num;
 	int GPid;
 	void hist();
 	~data();
