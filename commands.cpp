@@ -15,6 +15,26 @@ void printhistory (std::queue <std::string> hy)
 	} 
 }
 
+//********************************************
+// function name: printlist
+// Description: prints stl contianer list made from job class
+// Parameters: the container
+//**************************************************************************************
+void printlist(std::list<job> &jobs)
+{
+    // for (auto &i: jobs) {
+		time_t curr_time = time(0);
+		for(std::list<job>::iterator it = jobs.begin(); it != jobs.end(); it++ ){
+		time_t background_time = curr_time - it->create_time;
+		if (it->stopped ==false)
+        	std::cout << "[" << it->jobid << "] " <<  it->name << " : "  << it->pid << " " << background_time << " secs" << std::endl;
+		else
+		{
+			std::cout << "[" << it->jobid << "] " <<  it->name << " : "  << it->pid << " " << background_time << " secs" << " (Stopped)" << std::endl;
+		}
+		
+	}
+}
 
 //********************************************
 // function name: ExeCmd
@@ -27,7 +47,8 @@ int ExeCmd(char* lineSize, char* cmdString, data &dat)
 	char* cmd; 
 	char* args[MAX_ARG];
 	char pwd[MAX_LINE_SIZE];
-	char* delimiters = " \t\n";  
+	std::string del = " \t\n"; 
+	char* delimiters = &del[0]; 
 	int i = 0, num_arg = 0;
 	bool illegal_cmd = false; // illegal command
 	
@@ -154,7 +175,8 @@ if (!strcmp(cmd, "cd") )
 			char tmp [MAX_LINE_SIZE];
 			getcwd(tmp,MAX_LINE_SIZE);
 			if (tmp == NULL)
-				printf("perror/n"); // TODO PERROR
+				perror(NULL);
+				exit(EXIT_FAILURE);
 			else
 			{
 				std::cout << tmp << std::endl;
@@ -188,10 +210,24 @@ if (!strcmp(cmd, "cd") )
 	}
 	/*************************************************/
 	
-	// else if (!strcmp(cmd, "jobs")) 
-	// {
- 		
-	// }
+	else if (!strcmp(cmd, "jobs")) 
+	{
+ 		if (num_arg == 0)
+		{
+			// job joe;
+			// joe.jobid = 1;
+			// joe.name = "a.out";
+			// joe.pid = 1243;
+			// joe.create_time = time(0);
+			// // sleep(5);
+			// dat.jobs.push_front(joe);
+			printlist(dat.jobs);
+		}
+		else 
+		{
+			illegal_cmd = true;
+		}
+	}
 	// /*************************************************/
 	else if (!strcmp(cmd, "showpid")) 
 	{
@@ -257,20 +293,13 @@ void ExeExternal(char *args[MAX_ARG], char* cmdString, data &dat)
 	{
     		case -1: 
 			{
-
+				perror(NULL);
+				exit(EXIT_FAILURE);
 			}
-					// Add your code here (error)
-					
-					/* 
-					your code
-					*/
         	case 0 :
                 	// Child Process
 					{
 						setpgrp();
-						int pid2 =  getpid();
-						// std::cout << "smash 0 pid is " << pid2 <<  std::endl ;
-						// std::cout << "whiiiiiii im external " <<  std::endl ;
 						if (execvp(args[0], args) == -1) 
 						{	
 							perror(NULL); 
@@ -280,42 +309,34 @@ void ExeExternal(char *args[MAX_ARG], char* cmdString, data &dat)
 						break;
 					}
 			default:
-                	// Add your code here
 					{
-						// int pid3 =  getpid();
-						// std::cout << "smash def pid is " << pid3 <<  std::endl ;
 						 std::cout << "got to exee xternal " <<  std::endl ;
 						dat.GPid = pID;
-						// ttime=time(NULL);
 						waitpid(pID, NULL, WUNTRACED);
 						dat.GPid = -1;
-						/* 
-						}
-						your code
-						*/
 					}
 	}
 }
-//**************************************************************************************
-// function name: ExeComp
-// Description: executes complicated command
-// Parameters: command string
-// Returns: 0- if complicated -1- if not
-//**************************************************************************************
-int ExeComp(char* lineSize)
-{
-	char ExtCmd[MAX_LINE_SIZE+2];
-	char *args[MAX_ARG];
-    if ((strstr(lineSize, "|")) || (strstr(lineSize, "<")) || (strstr(lineSize, ">")) || (strstr(lineSize, "*")) || (strstr(lineSize, "?")) || (strstr(lineSize, ">>")) || (strstr(lineSize, "|&")))
-    {
-		// Add your code here (execute a complicated command)
+// //**************************************************************************************
+// // function name: ExeComp
+// // Description: executes complicated command
+// // Parameters: command string
+// // Returns: 0- if complicated -1- if not
+// //**************************************************************************************
+// int ExeComp(char* lineSize)
+// {
+// 	char ExtCmd[MAX_LINE_SIZE+2];
+// 	char *args[MAX_ARG];
+//     if ((strstr(lineSize, "|")) || (strstr(lineSize, "<")) || (strstr(lineSize, ">")) || (strstr(lineSize, "*")) || (strstr(lineSize, "?")) || (strstr(lineSize, ">>")) || (strstr(lineSize, "|&")))
+//     {
+// 		// Add your code here (execute a complicated command)
 			
-		/* 
-		your code
-		*/
-	} 
-	return -1;
-}
+// 		/* 
+// 		your code
+// 		*/
+// 	} 
+// 	return -1;
+// }
 //**************************************************************************************
 // function name: BgCmd
 // Description: if command is in background, insert the command to jobs
@@ -325,19 +346,47 @@ int ExeComp(char* lineSize)
 int BgCmd(char* lineSize, data &dat)
 {
 
-	char* Command;
-	char* delimiters = " \t\n";
+	int pID, i;
+	std::string del = " \t\n"; 
+	char* delimiters = &del[0]; 
 	char *args[MAX_ARG];
 	if (lineSize[strlen(lineSize)-2] == '&')
 	{
-		lineSize[strlen(lineSize)-2] = '\0';
-		// Add your code here (execute a in the background)
-					
-		/* 
-		your code
-		*/
-		
+	lineSize[strlen(lineSize)-2] = '\0';
+		args[0]= strtok(lineSize, delimiters);
+		if (!args[0]){
+			return 0;
+		}
+		for (i=1; i<MAX_ARG; i++)
+		{
+			args[i] = strtok(NULL, delimiters); 
+		}
+		std::string cmd(args[0]);
+		std::cout << cmd << std::endl;
+		switch(pID = fork()) 
+		{
+			case -1: 
+				perror(NULL);												
+				exit(-1);
+			case 0 :
+				// Child Process
+				setpgrp();
+				if (execvp(args[0], args) == -1) {
+					perror(NULL);
+					exit(-1);
+				}
+				exit(-1);
+			default:
+				job curr_job;
+				curr_job.create_time = time(0);
+				curr_job.pid = pID;
+				curr_job.name = cmd;
+				curr_job.stopped = false;
+				curr_job.jobid = ++ dat.job_num ;
+				dat.jobs.push_back(curr_job);
+
+				return 0;
+		}
 	}
 	return -1;
 }
-

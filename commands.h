@@ -11,6 +11,7 @@
 #include <iostream>
 #include <string>
 #include <queue>
+#include <stdint.h>
 
 #include "data.hpp" 
 
@@ -19,7 +20,7 @@
 #define MAX_ARG 20
 
 // typedef enum { FALSE , TRUE } bool;
-int ExeComp(char* lineSize);
+// int ExeComp(char* lineSize);
 int BgCmd(char* lineSize, data &dat);
 int ExeCmd(char* lineSize, char* cmdString, data& dat);
 void ExeExternal(char *args[MAX_ARG], char* cmdString, data &dat);
