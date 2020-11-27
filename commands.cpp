@@ -109,13 +109,13 @@ if (!strcmp(cmd, "cd") )
 			}
 			dat.prev_pwd = curr_string;
 		}
-		return 0;
+		// return 0;
 	}
 	
 	/*************************************************/
 
 	/*************************************************/
-	if (!strcmp(cmd, "diff") )  //TODO diff exieted 
+	else if (!strcmp(cmd, "diff") )  //TODO diff exieted 
 	{
 
 		if (num_arg == 2)
@@ -147,7 +147,7 @@ if (!strcmp(cmd, "cd") )
 	
 	/*************************************************/
 	// else if (!strcmp(cmd, "pwd")) 
-	if (!strcmp(cmd, "pwd"))
+	else if (!strcmp(cmd, "pwd"))
 	{
 		if ( num_arg== 0 )
 		{
@@ -260,7 +260,7 @@ void ExeExternal(char *args[MAX_ARG], char* cmdString, data &dat)
 
 			}
 					// Add your code here (error)
-					
+					// TODO
 					/* 
 					your code
 					*/
@@ -268,7 +268,7 @@ void ExeExternal(char *args[MAX_ARG], char* cmdString, data &dat)
                 	// Child Process
 					{
 						setpgrp();
-						int pid2 =  getpid();
+						// int pid2 =  getpid();
 						// std::cout << "smash 0 pid is " << pid2 <<  std::endl ;
 						// std::cout << "whiiiiiii im external " <<  std::endl ;
 						if (execvp(args[0], args) == -1) 
