@@ -5,8 +5,15 @@
 /*******************************************/
 /* Name: handler_cntlc
    Synopsis: handle the Control-C */
-#include "signals.h"
+#include "signals.hpp"
 
 // SIGTERM 
 
 // funt ctrl callocsystemcall(sigkill)
+
+
+void signal_handler(int sig_num)
+{
+   if( sig_num == SIGST)
+}
+
