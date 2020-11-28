@@ -97,8 +97,8 @@ int main(int argc, char **argv)
 					// built in commands
 					// e.g pwd cd ....
 		ExeCmd(lineSize, cmdString, dat);
-		
-		insertcmd(dat.history, cmdString);
+		if (his != 0 && his!= 32 && his != 9)
+			insertcmd(dat.history, cmdString);
 		/* initialize for next line read*/
 		lineSize[0]='\0';
 		cmdString[0]='\0';
