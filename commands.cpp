@@ -228,6 +228,16 @@ if (!strcmp(cmd, "cd") )
 	// /*************************************************/
 	else if (!strcmp(cmd, "quit"))
 	{
+		if (args[1] == "kill")
+		{
+			// for (auto &i: jobs) {
+			for(std::list<job>::iterator it = dat.jobs.begin(); it != dat.jobs.end(); it++ )
+			{
+				if (kill(it->pid , SIGTERM) == -1)
+					std::cout << "Could not send signal to jobid" << it->jobid << std::endl;
+				
+			}
+		}
    		int res = kill((int)getpid(), SIGKILL);
 
 		// /* cases when error  */
