@@ -250,16 +250,21 @@ if (!strcmp(cmd, "cd") )
 	{
 		if (num_arg==2)
 		{
-			job tmp = dat.findjob(dat.jobs ,atoi(args[1]));
+			std::list<job>::iterator tmp = dat.findjob(dat.jobs ,atoi(args[2]));
 			if(tmp == dat.jobs.end()) 
 			{
-				std::cout << "smash error:> kill " << tmp.jobid << " - job does not exist" << std::endl;
-
+				std::cout << "smash error:> kill " << tmp->jobid << " - job does not exist" << std::endl;
+				return -1;
 			}
-			int job_pid = tmp.pid;
-			if(kill(atoi(tmp.pid,args[1]+1)) == -1) // the  +1 is to skip the "-"
+			int job_pid = tmp->pid;
+			if(kill(tmp->pid,atoi(args[1]+1)) == -1) // the  +1 is to skip the "-"
 			{
-				std::cout << "smash error:> kill " << tmp.jobid << " - cannot send signal" << std::endl;
+				std::cout << "smash error:> kill " << tmp->jobid << " - cannot send signal" << std::endl;
+			}
+
+			if(atoi(args[1]+1) == SIGCONT)
+			{
+				tmp->stopped = false;
 			}
 		}
 		else

@@ -69,11 +69,11 @@ int main(int argc, char **argv)
 
 	sig_stp.sa_handler = &catch_SIGSTP;
 	sig_int.sa_handler = &catch_SIGINT;
-	sig_cont.sa_handler = &catch_SIGCONT;
+	// sig_cont.sa_handler = &catch_SIGCONT;
 
 	sigaction(SIGTSTP,&sig_stp,NULL);
 	sigaction(SIGINT,&sig_int,NULL);
-	sigaction(SIGCONT,&sig_cont,NULL);
+	// sigaction(SIGCONT,&sig_cont,NULL);
 	
 	// signal(SIGTSTP, [](int sig) { return sig_handler(sig, dat); });  
 	// signal(SIGINT, [](int sig) { return sig_handler(sig, dat); });  

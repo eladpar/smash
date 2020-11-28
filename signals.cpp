@@ -32,7 +32,7 @@ void sig_handler(int sig_num,data& dat)
             // insert new job
          	job curr_job; 
 				curr_job.create_time = time(0);
-				curr_job.pid = (int)getpid();
+				curr_job.pid = dat.GPid;
 				curr_job.name = dat.curr_name;
 				curr_job.stopped = true;
 				curr_job.jobid = ++ dat.job_num ;
@@ -58,6 +58,8 @@ void sig_handler(int sig_num,data& dat)
          }
       }   
    }
+
+
 
    return;
 }
