@@ -51,6 +51,10 @@ void catch_SIGINT (int sig)
 	return sig_handler(sig, dat);
 }
 
+void catch_SIGCONT (int sig)
+{
+	return sig_handler(sig, dat);
+}
 //**************************************************************************************
 // function name: main
 // Description: main function of smash. get command from user and calls command functions
@@ -61,12 +65,15 @@ int main(int argc, char **argv)
 
 	struct sigaction sig_stp;
 	struct sigaction sig_int;
+	struct sigaction sig_cont;
 
 	sig_stp.sa_handler = &catch_SIGSTP;
 	sig_int.sa_handler = &catch_SIGINT;
+	sig_cont.sa_handler = &catch_SIGCONT;
 
 	sigaction(SIGTSTP,&sig_stp,NULL);
 	sigaction(SIGINT,&sig_int,NULL);
+	sigaction(SIGCONT,&sig_cont,NULL);
 	
 	// signal(SIGTSTP, [](int sig) { return sig_handler(sig, dat); });  
 	// signal(SIGINT, [](int sig) { return sig_handler(sig, dat); });  
