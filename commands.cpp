@@ -68,34 +68,6 @@ int ExeCmd(char* lineSize, char* cmdString, data &dat)
 // ARE IN THIS CHAIN OF IF COMMANDS. PLEASE ADD
 // MORE IF STATEMENTS AS REQUIRED
 /*************************************************/
-	// if (!strcmp(cmd, "cd") ) 
-	// {			
-	// 	std::string path (cmdString+3);
-	// 	std::string tmp;
-	// 	getcwd(tmp,MAX_LINE_SIZE);
-
-	// 	//if(args[1]=='-')
-	// 	if(path == '-')
-	// 	{
-	// 		if (dat.prev_pwd.empty() == true)
-	// 		{
-	// 			std::cout << dat.prev_pwd << std::end;
-	// 			chdir(dat.prev_pwd);
-	// 			dat.prev_pwd = tmp;
-	// 		}
-	// 	}
-
-	// 	if(chdir(path) == 0)
-	// 	{
-	// 		dat.prev_pwd = tmp;
-	// 	}
-	// 	else
-	// 	{
-	// 		std::cout << "smash error: > \"" << path << "\"- No such file or directory" << endl;
-	// 	}
-	// }	
-
-/*************************/
 if (!strcmp(cmd, "cd") ) 
 	{
 		std::string path (cmdString+3);

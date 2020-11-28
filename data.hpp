@@ -28,7 +28,10 @@ public:
 	std::string prev_pwd;
 	int job_num;
 	int GPid;
+	std::string curr_name;
 	void hist();
 	~data();
 };
+
+
 

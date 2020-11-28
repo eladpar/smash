@@ -47,25 +47,9 @@ int main(int argc, char **argv)
 {
     char cmdString[MAX_LINE_SIZE]; 	 
 	signal(SIGTSTP, [](int sig) { return sig_handler(sig, dat); });  
-	// dat.jobs = new std::string[10];
-	// dat.jobs[0] = "acca";
-	// dat.jobs[1] = "dafd";
-	// std::cout << dat.jobs[0] << dat.jobs[1] << std::endl;
-	//signal declaretions
-	//NOTE: the signal handlers and the function/s that sets the handler should be found in siganls.c
-	 /* add your code here */
-	
-	/************************************/
-	//NOTE: the signal handlers and the function/s that sets the handler should be found in siganls.c
-	//set your signal handlers here
-	/* add your code here */
+	signal(SIGINT, [](int sig) { return sig_handler(sig, dat); });  
 
-	/************************************/
 
-	/************************************/
-	// Init globals 
-	
-	// std::string prev_pwd;
 	dat.job_num = 0;
 	dat.GPid = -1;
 
@@ -78,14 +62,11 @@ int main(int argc, char **argv)
     	{
 		std::cout << "smash > ";
 		fgets(lineSize, MAX_LINE_SIZE, stdin);
-		strcpy(cmdString, lineSize);    	
+		strcpy(cmdString, lineSize);    
 		cmdString[strlen(lineSize)-1]='\0';
 
-					// perform a complicated Command 
-/* 		std::cout << "line_size " << lineSize << std::endl;
-		std::cout << "cmd string " << cmdString << std::endl;
-		std::cout << "line_size " << lineSize << std::endl; */
-		// if(!ExeComp(lineSize)) continue; 
+		std::string curr_string (cmdString);
+		dat.curr_name = curr_string;
 
 					// background command
 			
