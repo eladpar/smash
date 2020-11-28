@@ -9,7 +9,7 @@ main file. This file contains the main function of smash
 #include <signal.h>
 #include <queue>
 #include "commands.h"
-#include "signals.h"
+#include "signals.hpp"
 #include "data.hpp"  
 #define MAX_LINE_SIZE 80
 #define MAXARGS 20
@@ -17,8 +17,10 @@ main file. This file contains the main function of smash
 
 char* L_Fg_Cmd;
 // void* jobs = NULL; //This represents the list of jobs. Please change to a preferred type (e.g array of char*)
-char lineSize[MAX_LINE_SIZE]; 
+char lineSize[MAX_LINE_SIZE];
 
+
+// data * p_dat = new data;
 data dat;
 
 
@@ -43,7 +45,8 @@ void insertcmd(std::queue <std::string> &his, char * command)
 //**************************************************************************************
 int main(int argc, char **argv)
 {
-    char cmdString[MAX_LINE_SIZE]; 	   
+    char cmdString[MAX_LINE_SIZE]; 	 
+	signal(SIGTSTP, [](int sig) { return sig_handler(sig, dat); });  
 	// dat.jobs = new std::string[10];
 	// dat.jobs[0] = "acca";
 	// dat.jobs[1] = "dafd";
@@ -64,6 +67,7 @@ int main(int argc, char **argv)
 	
 	// std::string prev_pwd;
 	dat.job_num = 0;
+	dat.GPid = -1;
 
 	L_Fg_Cmd =(char*)malloc(sizeof(char)*(MAX_LINE_SIZE+1));
 	if (L_Fg_Cmd == NULL) 

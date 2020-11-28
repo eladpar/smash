@@ -12,7 +12,7 @@ smash: $(OBJS)
 data.o: data.cpp data.hpp
 commands.o: commands.cpp commands.h data.hpp
 smash.o: smash.cpp commands.h data.hpp
-signals.o: signals.cpp signals.h
+signals.o: signals.cpp signals.hpp
 # Cleaning old files before new make
 clean:
 	$(RM) $(TARGET) *.o *~ "#"* core.*

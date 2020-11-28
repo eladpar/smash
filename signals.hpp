@@ -8,7 +8,12 @@
 #include <string.h>
 #include <signal.h>
 
+#include "data.hpp"
+#include <iostream>
+#include <string>
 
+void sig_handler(int sig_num,data& dat);
 
 #endif
+
 

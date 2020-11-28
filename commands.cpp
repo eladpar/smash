@@ -175,8 +175,10 @@ if (!strcmp(cmd, "cd") )
 			char tmp [MAX_LINE_SIZE];
 			getcwd(tmp,MAX_LINE_SIZE);
 			if (tmp == NULL)
+			{
 				perror(NULL);
 				exit(EXIT_FAILURE);
+			}
 			else
 			{
 				std::cout << tmp << std::endl;
@@ -310,33 +312,14 @@ void ExeExternal(char *args[MAX_ARG], char* cmdString, data &dat)
 					}
 			default:
 					{
-						 std::cout << "got to exee xternal " <<  std::endl ;
+						std::cout << "got to exee xternal " <<  std::endl ;
 						dat.GPid = pID;
 						waitpid(pID, NULL, WUNTRACED);
 						dat.GPid = -1;
 					}
 	}
 }
-// //**************************************************************************************
-// // function name: ExeComp
-// // Description: executes complicated command
-// // Parameters: command string
-// // Returns: 0- if complicated -1- if not
-// //**************************************************************************************
-// int ExeComp(char* lineSize)
-// {
-// 	char ExtCmd[MAX_LINE_SIZE+2];
-// 	char *args[MAX_ARG];
-//     if ((strstr(lineSize, "|")) || (strstr(lineSize, "<")) || (strstr(lineSize, ">")) || (strstr(lineSize, "*")) || (strstr(lineSize, "?")) || (strstr(lineSize, ">>")) || (strstr(lineSize, "|&")))
-//     {
-// 		// Add your code here (execute a complicated command)
-			
-// 		/* 
-// 		your code
-// 		*/
-// 	} 
-// 	return -1;
-// }
+
 //**************************************************************************************
 // function name: BgCmd
 // Description: if command is in background, insert the command to jobs
