@@ -24,6 +24,8 @@ char lineSize[MAX_LINE_SIZE];
 data dat;
 
 
+
+
 //********************************************
 // function name: insertcmd
 // Description: insert command into history while checking queue container size if big then remove oldest command
@@ -39,6 +41,16 @@ void insertcmd(std::queue <std::string> &his, char * command)
 	his.push(command); // TODO "" or error?
 }
 
+void catch_SIGSTP (int sig)
+{
+	return sig_handler(sig, dat);
+}
+
+void catch_SIGINT (int sig)
+{
+	return sig_handler(sig, dat);
+}
+
 //**************************************************************************************
 // function name: main
 // Description: main function of smash. get command from user and calls command functions
@@ -46,8 +58,18 @@ void insertcmd(std::queue <std::string> &his, char * command)
 int main(int argc, char **argv)
 {
     char cmdString[MAX_LINE_SIZE]; 	 
-	signal(SIGTSTP, [](int sig) { return sig_handler(sig, dat); });  
-	signal(SIGINT, [](int sig) { return sig_handler(sig, dat); });  
+
+	struct sigaction sig_stp;
+	struct sigaction sig_int;
+
+	sig_stp.sa_handler = &catch_SIGSTP;
+	sig_int.sa_handler = &catch_SIGINT;
+
+	sigaction(SIGTSTP,&sig_stp,NULL);
+	sigaction(SIGINT,&sig_int,NULL);
+	
+	// signal(SIGTSTP, [](int sig) { return sig_handler(sig, dat); });  
+	// signal(SIGINT, [](int sig) { return sig_handler(sig, dat); });  
 
 
 	dat.job_num = 0;
