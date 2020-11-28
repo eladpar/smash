@@ -213,12 +213,23 @@ if (!strcmp(cmd, "cd") )
 	// /*************************************************/
 	else if (!strcmp(cmd, "fg")) 
 	{
-		if (num_arg == 1)
+		if (num_arg == 1 || num_arg == 0)
 		{
-			std::list<job>::iterator tmp = dat.findjob(dat.jobs ,atoi(args[1]));
-			if(tmp == dat.jobs.end()) 
+			std::list<job>::iterator tmp = dat.findjob(dat.jobs ,dat.job_num); // if num_arg == 0
+
+			if(num_arg == 1)
 			{
-				std::cout << "There isn't a process at the backgroung" << std::endl;
+				std::list<job>::iterator tmp = dat.findjob(dat.jobs ,atoi(args[1]));
+			}
+			
+			
+			// if (num_arg == 0)
+			// {
+			// 	tmp = dat.findjob(dat.jobs ,dat.job_num);
+			// }
+			if(tmp == dat.jobs.end() || dat.job_num == 0) 
+			{
+				std::cout << "There isn't a process at the backgroung \ isnt such process" << std::endl;
 				return -1;
 			}
 			if(tmp->stopped == true)
@@ -233,6 +244,10 @@ if (!strcmp(cmd, "cd") )
 			dat.GPid = tmp->pid;
 			waitpid(tmp->pid, NULL, WUNTRACED);
 			dat.GPid = -1;
+		}
+		else
+		{
+			illegal_cmd = true;
 		}
 		
 	} 
