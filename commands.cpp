@@ -211,10 +211,31 @@ if (!strcmp(cmd, "cd") )
 		}
 	}
 	// /*************************************************/
-	// else if (!strcmp(cmd, "fg")) 
-	// {
+	else if (!strcmp(cmd, "fg")) 
+	{
+		if (num_arg == 1)
+		{
+			std::list<job>::iterator tmp = dat.findjob(dat.jobs ,atoi(args[1]));
+			if(tmp == dat.jobs.end()) 
+			{
+				std::cout << "There isn't a process at the backgroung" << std::endl;
+				return -1;
+			}
+			if(tmp->stopped == true)
+			{
+				if(kill(tmp->pid,SIGCONT) == -1)
+				{
+					std::cout << "The process fails continue" << std::endl;
+				}
+				tmp->stopped = false;
+			}
+
+			dat.GPid = tmp->pid;
+			waitpid(tmp->pid, NULL, WUNTRACED);
+			dat.GPid = -1;
+		}
 		
-	// } 
+	} 
 	// /*************************************************/
 	// else if (!strcmp(cmd, "bg")) 
 	// {
