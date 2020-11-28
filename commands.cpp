@@ -164,11 +164,6 @@ if (!strcmp(cmd, "cd") )
 	}
 	
 	// /*************************************************/
-	// else if (!strcmp(cmd, "mkdir"))
-	// {
- 		
-	// }
-	// /*************************************************/
 	// /*************************************************/
 	else if (!strcmp(cmd, "history"))
 	{
@@ -241,6 +236,28 @@ if (!strcmp(cmd, "cd") )
 		// 	break;
 		// }
 	} 
+	else if (!strcmp(cmd, "kill"))
+	{
+		if (num_arg==2)
+		{
+			job tmp = dat.findjob(dat.jobs ,atoi(args[1]));
+			if(tmp == dat.jobs.end()) 
+			{
+				std::cout << "smash error:> kill " << tmp.jobid << " - job does not exist" << std::endl;
+
+			}
+			int job_pid = tmp.pid;
+			if(kill(atoi(tmp.pid,args[1]+1)) == -1) // the  +1 is to skip the "-"
+			{
+				std::cout << "smash error:> kill " << tmp.jobid << " - cannot send signal" << std::endl;
+			}
+		}
+		else
+		{
+			illegal_cmd = true;
+		}
+	}
+	
 	// /*************************************************/
 	else // external command
 	{

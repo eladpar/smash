@@ -56,22 +56,8 @@ void sig_handler(int sig_num,data& dat)
             std::cout << "signal SIGINT was sent to pid " << dat.GPid << std::endl;
             dat.GPid = -1;
          }
-      }
-      
-      
-
-
-      // else if (sig_num == SIGCONT)
-      // {
-      //    // if(kill(GPid,SIGTSTP)==-1)
-      //    // {
-      //    //    perror(NULL);
-      //    //    return;	
-      //    // }
-
-      //     // std::cout << "signal SIGSTP was sent to pid" << dat.GPid << std::endl;
-      //     //find the job
-      // }
+      }   
    }
+
    return;
 }
