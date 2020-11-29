@@ -237,6 +237,8 @@ if (!strcmp(cmd, "cd") )
 					std::cout << "Could not send signal to jobid" << it->jobid << std::endl;
 				
 			}
+			sleep (5);
+			// check all jobs if one was not killed send sig kiill;
 		}
    		int res = kill((int)getpid(), SIGKILL);
 
