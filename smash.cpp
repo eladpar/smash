@@ -38,7 +38,7 @@ void insertcmd(std::queue <std::string> &his, char * command)
 		his.pop();
 	}
 
-	his.push(command); // TODO "" or error?
+	his.push(command); 
 }
 
 void catch_SIGSTP (int sig)

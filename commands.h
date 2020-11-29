@@ -15,7 +15,7 @@
 
 #include "data.hpp" 
 
-
+#define KILL_TIME 5
 #define MAX_LINE_SIZE 80
 #define MAX_ARG 20
 

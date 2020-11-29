@@ -305,19 +305,46 @@ if (!strcmp(cmd, "cd") )
 	// /*************************************************/
 	else if (!strcmp(cmd, "quit"))
 	{
-		if (args[1] == "kill")
+		if (!strcmp(args[1], "kill") && (num_arg ==1) && (dat.job_num > 0))
 		{
+			bool not_killed = false;
+
 			// for (auto &i: jobs) {
 			for(std::list<job>::iterator it = dat.jobs.begin(); it != dat.jobs.end(); it++ )
 			{
+				bool not_killed = false;
+				time_t start_time = time(0);
+
 				if (kill(it->pid , SIGTERM) == -1)
 					std::cout << "Could not send signal to jobid" << it->jobid << std::endl;
+				std::cout << "[" << it->jobid << "] " <<  it->name << " - " << "Sending SIGTERM...";
+				while (!kill(it->pid ,0))
+				{
+					if ((int)(time(0) - start_time) >= 10)
+					{
+						not_killed = true;
+						break;
+					}
+						
+				}
+				if (not_killed == true)
+				{
+					std::cout << " (5 sec passed) Sending SIGKILL... Done" << std::endl;
+					kill(it->pid , SIGKILL);
+				}
+				else
+				{
+					std::cout << " Done" << std::endl;
+				}
 				
 			}
-			sleep (5);
+			int res = kill((int)getpid(), SIGKILL);
 			// check all jobs if one was not killed send sig kiill;
 		}
+		else
+		{
    		int res = kill((int)getpid(), SIGKILL);
+		}
 
 		// /* cases when error  */
 		// switch (res)
