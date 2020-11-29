@@ -164,11 +164,6 @@ if (!strcmp(cmd, "cd") )
 	}
 	
 	// /*************************************************/
-	// else if (!strcmp(cmd, "mkdir"))
-	// {
- 		
-	// }
-	// /*************************************************/
 	// /*************************************************/
 	else if (!strcmp(cmd, "history"))
 	{
@@ -216,10 +211,46 @@ if (!strcmp(cmd, "cd") )
 		}
 	}
 	// /*************************************************/
-	// else if (!strcmp(cmd, "fg")) 
-	// {
+	else if (!strcmp(cmd, "fg")) 
+	{
+		if (num_arg == 1 || num_arg == 0)
+		{
+			std::list<job>::iterator tmp = dat.findjob(dat.jobs ,dat.job_num); // if num_arg == 0
+
+			if(num_arg == 1)
+			{
+				std::list<job>::iterator tmp = dat.findjob(dat.jobs ,atoi(args[1]));
+			}
+			
+			
+			// if (num_arg == 0)
+			// {
+			// 	tmp = dat.findjob(dat.jobs ,dat.job_num);
+			// }
+			if(tmp == dat.jobs.end() || dat.job_num == 0) 
+			{
+				std::cout << "There isn't a process at the backgroung \ isnt such process" << std::endl;
+				return -1;
+			}
+			if(tmp->stopped == true)
+			{
+				if(kill(tmp->pid,SIGCONT) == -1)
+				{
+					std::cout << "The process fails continue" << std::endl;
+				}
+				tmp->stopped = false;
+			}
+
+			dat.GPid = tmp->pid;
+			waitpid(tmp->pid, NULL, WUNTRACED);
+			dat.GPid = -1;
+		}
+		else
+		{
+			illegal_cmd = true;
+		}
 		
-	// } 
+	} 
 	// /*************************************************/
 	// else if (!strcmp(cmd, "bg")) 
 	// {
@@ -253,6 +284,33 @@ if (!strcmp(cmd, "cd") )
 		// 	break;
 		// }
 	} 
+	else if (!strcmp(cmd, "kill"))
+	{
+		if (num_arg==2)
+		{
+			std::list<job>::iterator tmp = dat.findjob(dat.jobs ,atoi(args[2]));
+			if(tmp == dat.jobs.end()) 
+			{
+				std::cout << "smash error:> kill " << tmp->jobid << " - job does not exist" << std::endl;
+				return -1;
+			}
+			int job_pid = tmp->pid;
+			if(kill(tmp->pid,atoi(args[1]+1)) == -1) // the  +1 is to skip the "-"
+			{
+				std::cout << "smash error:> kill " << tmp->jobid << " - cannot send signal" << std::endl;
+			}
+
+			if(atoi(args[1]+1) == SIGCONT)
+			{
+				tmp->stopped = false;
+			}
+		}
+		else
+		{
+			illegal_cmd = true;
+		}
+	}
+	
 	// /*************************************************/
 	else // external command
 	{
