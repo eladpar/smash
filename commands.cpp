@@ -108,15 +108,15 @@ if (!strcmp(cmd, "cd") )
 	/*************************************************/
 
 	/*************************************************/
-	if (!strcmp(cmd, "diff") )  //TODO diff exieted 
+	else if (!strcmp(cmd, "diff") )  
 	{
 
 		if (num_arg == 2)
 		{
 			FILE *f1 = fopen(args[1], "r");
-			if (!f1) {  perror(args[1]); exit(EXIT_FAILURE);  };
+			if (!f1) {  perror(args[1]); return -1;  };
 			FILE *f2 = fopen(args[2], "r");
-			if (!f2) {  perror(args[2]); exit(EXIT_FAILURE);  };
+			if (!f2) {  perror(args[2]); return -1;  };
 			bool samefile = true;
 			int c1, c2;
 			while (samefile && ((c1 = getc(f1)) != EOF) || ((c2 = getc(f2)) != EOF))
@@ -140,7 +140,7 @@ if (!strcmp(cmd, "cd") )
 	
 	/*************************************************/
 	// else if (!strcmp(cmd, "pwd")) 
-	if (!strcmp(cmd, "pwd"))
+	else if (!strcmp(cmd, "pwd"))
 	{
 		if ( num_arg== 0 )
 		{
@@ -149,7 +149,7 @@ if (!strcmp(cmd, "cd") )
 			if (tmp == NULL)
 			{
 				perror(NULL);
-				exit(EXIT_FAILURE);
+				return -1;
 			}
 			else
 			{
@@ -164,12 +164,58 @@ if (!strcmp(cmd, "cd") )
 	}
 	
 	// /*************************************************/
+		else if (!strcmp(cmd, "history"))
+	{
+		FILE *src, *dst;
+		char ch;
+
+		if ( num_arg != 0 ) 
+		{
+			illegal_cmd = true;
+		}
+
+		/* openning source file */
+		// rb mode in order to open non -text file 
+		if((src = fopen(args[1], "rb"))==NULL) {
+			perror("Cannot open src file");
+			return -1;
+		}
+
+		/* opening destination file */
+		// wb mode in order to open non -text file 
+		if((dst = fopen(args[2], "wb"))==NULL) {
+			perror("Cannot open dest file");
+			return -1;
+		}
+
+		/* copy the file */
+		while(!feof(src)) {
+			ch = fgetc(src);
+			if(ferror(src)) 
+			{
+			perror("error reading src file");
+			return -1;
+			}
+			if(!feof(src)) fputc(ch, dst);
+			if(ferror(dst)) 
+			{
+			perror("error reading dst file");
+			return -1;
+			}
+		}
+
+		if((fclose(src)==EOF) || (fclose(dst)==EOF)) 
+		{
+			perror("Cannot open src file");
+			return -1;
+		}
+	}
 	// /*************************************************/
 	else if (!strcmp(cmd, "history"))
 	{
  		if (num_arg == 0)
 		{
-			printhistory(dat.history); // TODO only add history last?// and shoud "" be history?
+			printhistory(dat.history); 
 			return 0;
 		}
 		else 
@@ -338,7 +384,7 @@ void ExeExternal(char *args[MAX_ARG], char* cmdString, data &dat)
     		case -1: 
 			{
 				perror(NULL);
-				exit(EXIT_FAILURE);
+				return ;
 			}
         	case 0 :
                 	// Child Process
@@ -347,7 +393,7 @@ void ExeExternal(char *args[MAX_ARG], char* cmdString, data &dat)
 						if (execvp(args[0], args) == -1) 
 						{	
 							perror(NULL); 
-							exit(-1);
+							return ;
 						}
 
 						break;
@@ -392,15 +438,15 @@ int BgCmd(char* lineSize, data &dat)
 		{
 			case -1: 
 				perror(NULL);												
-				exit(-1);
+				return -1;
 			case 0 :
 				// Child Process
 				setpgrp();
 				if (execvp(args[0], args) == -1) {
 					perror(NULL);
-					exit(-1);
+					return -1;
 				}
-				exit(-1);
+				return -1;
 			default:
 				job curr_job;
 				curr_job.create_time = time(0);
