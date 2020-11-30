@@ -262,16 +262,6 @@ int ExeCmd(char* lineSize, char* cmdString, data &dat)
 			{
 				tmp = dat.findjob(dat.jobs ,atoi(args[1]));
 			}
-<<<<<<< HEAD
-
-=======
-			
-			
-			// if (num_arg == 0)
-			// {
-			// 	tmp = dat.findjob(dat.jobs ,dat.job_num);
-			// }
->>>>>>> dce310c0d7f536d859845dd2c69f16a25828e5a5
 			if(tmp == dat.jobs.end() || dat.jobs.size() == 0) 
 			{
 				std::cout << "There isn't a process at the backgroung -- isnt such process" << std::endl;
@@ -310,7 +300,6 @@ int ExeCmd(char* lineSize, char* cmdString, data &dat)
 				bool not_killed = false;
 				for(std::list<job>::iterator it = dat.jobs.begin(); it != dat.jobs.end(); it++ )
 				{
-<<<<<<< HEAD
 					bool not_killed = false;
 					time_t start_time = time(0);
 
@@ -319,9 +308,6 @@ int ExeCmd(char* lineSize, char* cmdString, data &dat)
 					std::cout << "[" << it->jobid << "] " <<  it->name << " - " << "Sending SIGTERM...";
 					dat.checkandbreakprocess(dat.jobs);
 					while (!kill(it->pid ,0))
-=======
-					if ((int)(time(0) - start_time) >= 5)
->>>>>>> dce310c0d7f536d859845dd2c69f16a25828e5a5
 					{
 						waitpid(-1, NULL, WNOHANG);
 						if ((int)(time(0) - start_time) >= KILL_TIME)
