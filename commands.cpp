@@ -261,7 +261,7 @@ if (!strcmp(cmd, "cd") )
 	{
 		if (num_arg == 1 || num_arg == 0)
 		{
-			std::list<job>::iterator tmp = dat.findjob(dat.jobs ,dat.job_num); // if num_arg == 0
+			std::list<job>::iterator tmp = dat.jobs.begin(); // if num_arg == 0
 
 			if(num_arg == 1)
 			{
@@ -273,9 +273,9 @@ if (!strcmp(cmd, "cd") )
 			// {
 			// 	tmp = dat.findjob(dat.jobs ,dat.job_num);
 			// }
-			if(tmp == dat.jobs.end() || dat.job_num == 0) 
+			if(tmp == dat.jobs.end() || dat.jobs.size() == 0) 
 			{
-				std::cout << "There isn't a process at the backgroung \ isnt such process" << std::endl;
+				std::cout << "There isn't a process at the backgroung -- isnt such process" << std::endl;
 				return -1;
 			}
 			if(tmp->stopped == true)
@@ -321,7 +321,7 @@ if (!strcmp(cmd, "cd") )
 				waitpid(-1, NULL, WNOHANG);
 				while (!kill(it->pid ,0))
 				{
-					if ((int)(time(0) - start_time) >= 10)
+					if ((int)(time(0) - start_time) >= 5)
 					{
 						not_killed = true;
 						break;
