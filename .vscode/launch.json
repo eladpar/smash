@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "(gdb) Launch",
+            "name": "gcc-5 - Build and debug active file",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/smash",
@@ -21,7 +21,9 @@
                     "text": "-enable-pretty-printing",
                     "ignoreFailures": true
                 }
-            ]
+            ],
+            "preLaunchTask": "C/C++: gcc-5 build active file",
+            "miDebuggerPath": "/usr/bin/gdb"
         }
     ]
 }

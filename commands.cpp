@@ -68,7 +68,7 @@ int ExeCmd(char* lineSize, char* cmdString, data &dat)
 // ARE IN THIS CHAIN OF IF COMMANDS. PLEASE ADD
 // MORE IF STATEMENTS AS REQUIRED
 /*************************************************/
-if (!strcmp(cmd, "cd") ) 
+	if (!strcmp(cmd, "cd") ) 
 	{
 		std::string path (cmdString+3);
 	
@@ -130,14 +130,14 @@ if (!strcmp(cmd, "cd") )
 			else
 				std::cout << "1" << std::endl;//bad - the files are different
 
-			
+			return 0;
 		}
 		else 
 		{
 			illegal_cmd = true;
 		}
 	} 
-	
+
 	/*************************************************/
 	// else if (!strcmp(cmd, "pwd")) 
 	else if (!strcmp(cmd, "pwd"))
@@ -164,7 +164,7 @@ if (!strcmp(cmd, "cd") )
 	}
 	
 	// /*************************************************/
-		else if (!strcmp(cmd, "history"))
+	else if (!strcmp(cmd, "history"))
 	{
 		FILE *src, *dst;
 		char ch;
@@ -227,15 +227,9 @@ if (!strcmp(cmd, "cd") )
 	
 	else if (!strcmp(cmd, "jobs")) 
 	{
+		dat.checkandbreakprocess(dat.jobs);
  		if (num_arg == 0)
 		{
-			// job joe;
-			// joe.jobid = 1;
-			// joe.name = "a.out";
-			// joe.pid = 1243;
-			// joe.create_time = time(0);
-			// // sleep(5);
-			// dat.jobs.push_front(joe);
 			printlist(dat.jobs);
 		}
 		else 
@@ -259,23 +253,19 @@ if (!strcmp(cmd, "cd") )
 	// /*************************************************/
 	else if (!strcmp(cmd, "fg")) 
 	{
+		dat.checkandbreakprocess(dat.jobs);
 		if (num_arg == 1 || num_arg == 0)
 		{
-			std::list<job>::iterator tmp = dat.findjob(dat.jobs ,dat.job_num); // if num_arg == 0
+			std::list<job>::iterator tmp = dat.jobs.begin(); // if num_arg == 0
 
 			if(num_arg == 1)
 			{
-				std::list<job>::iterator tmp = dat.findjob(dat.jobs ,atoi(args[1]));
+				tmp = dat.findjob(dat.jobs ,atoi(args[1]));
 			}
-			
-			
-			// if (num_arg == 0)
-			// {
-			// 	tmp = dat.findjob(dat.jobs ,dat.job_num);
-			// }
-			if(tmp == dat.jobs.end() || dat.job_num == 0) 
+
+			if(tmp == dat.jobs.end() || dat.jobs.size() == 0) 
 			{
-				std::cout << "There isn't a process at the backgroung \ isnt such process" << std::endl;
+				std::cout << "There isn't a process at the backgroung -- isnt such process" << std::endl;
 				return -1;
 			}
 			if(tmp->stopped == true)
@@ -295,68 +285,57 @@ if (!strcmp(cmd, "cd") )
 		{
 			illegal_cmd = true;
 		}
-		
 	} 
 	// /*************************************************/
 	// else if (!strcmp(cmd, "bg")) 
 	// {
-  		
+	//	dat.checkandbreakprocess(dat.jobs);
 	// }
 	// /*************************************************/
 	else if (!strcmp(cmd, "quit"))
 	{
-		if (!strcmp(args[1], "kill") && (num_arg ==1) && (dat.job_num > 0))
+		if (num_arg ==1)
 		{
-			bool not_killed = false;
-
-			// for (auto &i: jobs) {
-			for(std::list<job>::iterator it = dat.jobs.begin(); it != dat.jobs.end(); it++ )
+			if (!strcmp(args[1], "kill") && (dat.job_num > 0))
 			{
 				bool not_killed = false;
-				time_t start_time = time(0);
+				for(std::list<job>::iterator it = dat.jobs.begin(); it != dat.jobs.end(); it++ )
+				{
+					bool not_killed = false;
+					time_t start_time = time(0);
 
-				if (kill(it->pid , SIGTERM) == -1)
-					std::cout << "Could not send signal to jobid" << it->jobid << std::endl;
-				std::cout << "[" << it->jobid << "] " <<  it->name << " - " << "Sending SIGTERM...";
-				waitpid(-1, NULL, WNOHANG);
-				while (!kill(it->pid ,0))
-				{
-					if ((int)(time(0) - start_time) >= 10)
+					if (kill(it->pid , SIGTERM) == -1)
+						std::cout << "Could not send signal to jobid" << it->jobid << std::endl;
+					std::cout << "[" << it->jobid << "] " <<  it->name << " - " << "Sending SIGTERM...";
+					dat.checkandbreakprocess(dat.jobs);
+					while (!kill(it->pid ,0))
 					{
-						not_killed = true;
-						break;
+						waitpid(-1, NULL, WNOHANG);
+						if ((int)(time(0) - start_time) >= KILL_TIME)
+						{
+							not_killed = true;
+							break;
+						}
+							
 					}
-						
+					if (not_killed == true)
+					{
+						std::cout << " (5 sec passed) Sending SIGKILL... Done" << std::endl;
+						kill(it->pid , SIGKILL);
+					}
+					else
+					{
+						std::cout << " Done" << std::endl;
+					}
+					
 				}
-				if (not_killed == true)
-				{
-					std::cout << " (5 sec passed) Sending SIGKILL... Done" << std::endl;
-					kill(it->pid , SIGKILL);
-				}
-				else
-				{
-					std::cout << " Done" << std::endl;
-				}
-				
+				int res = kill((int)getpid(), SIGKILL);
 			}
-			int res = kill((int)getpid(), SIGKILL);
-			// check all jobs if one was not killed send sig kiill;
 		}
 		else
 		{
    		int res = kill((int)getpid(), SIGKILL);
 		}
-
-		// /* cases when error  */
-		// switch (res)
-		// {
-		// case EINVAL:
-		// 	/* code */
-		// 	break;
-		
-		// default:
-		// 	break;
-		// }
 	} 
 	else if (!strcmp(cmd, "kill"))
 	{
@@ -428,7 +407,6 @@ void ExeExternal(char *args[MAX_ARG], char* cmdString, data &dat)
 					}
 			default:
 					{
-						std::cout << "got to exee xternal " <<  std::endl ;
 						dat.GPid = pID;
 						waitpid(pID, NULL, WUNTRACED);
 						dat.GPid = -1;

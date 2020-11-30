@@ -63,20 +63,17 @@ int main(int argc, char **argv)
 {
     char cmdString[MAX_LINE_SIZE]; 	 
 
-	struct sigaction sig_stp;
-	struct sigaction sig_int;
-	struct sigaction sig_cont;
+	struct sigaction sig_stp = {0};
+	struct sigaction sig_int = {0};
+	struct sigaction sig_cont = {0};
 
 	sig_stp.sa_handler = &catch_SIGSTP;
 	sig_int.sa_handler = &catch_SIGINT;
-	// sig_cont.sa_handler = &catch_SIGCONT;
+
 
 	sigaction(SIGTSTP,&sig_stp,NULL);
 	sigaction(SIGINT,&sig_int,NULL);
-	// sigaction(SIGCONT,&sig_cont,NULL);
-	
-	// signal(SIGTSTP, [](int sig) { return sig_handler(sig, dat); });  
-	// signal(SIGINT, [](int sig) { return sig_handler(sig, dat); });  
+  
 
 
 	dat.job_num = 0;
