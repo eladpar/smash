@@ -318,6 +318,7 @@ if (!strcmp(cmd, "cd") )
 				if (kill(it->pid , SIGTERM) == -1)
 					std::cout << "Could not send signal to jobid" << it->jobid << std::endl;
 				std::cout << "[" << it->jobid << "] " <<  it->name << " - " << "Sending SIGTERM...";
+				waitpid(-1, NULL, WNOHANG);
 				while (!kill(it->pid ,0))
 				{
 					if ((int)(time(0) - start_time) >= 10)

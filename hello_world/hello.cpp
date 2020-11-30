@@ -1,8 +1,18 @@
 #include <iostream> 
+#include <signal.h>
 using namespace std; 
-  
+  void catch_SIGTERM (int sig)
+{
+	std::cout << "caught SIGTERM" << std::endl;
+}
 int main(int argc, char** argv) 
 { 
+	struct sigaction sig_term;
+
+	sig_term.sa_handler = &catch_SIGTERM;
+	// sig_cont.sa_handler = &catch_SIGCONT;
+
+	sigaction(SIGTERM,&sig_term,NULL);
 	while(1){
 		// cout << "Hello World! " << endl;
 	}
