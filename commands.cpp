@@ -396,11 +396,16 @@ void ExeExternal(char *args[MAX_ARG], char* cmdString, data &dat)
                 	// Child Process
 					{
 						setpgrp();
+						std::cout << "smashX2 first time" << std::endl;
+
 						if (execvp(args[0], args) == -1) 
 						{	
+							std::cout << "smashX2 second time" << std::endl;
+
 							perror(NULL); 
-							return ;
+							exit(1);
 						}
+						std::cout << "smashX2" << std::endl;
 
 						break;
 					}
@@ -449,7 +454,7 @@ int BgCmd(char* lineSize, data &dat)
 				setpgrp();
 				if (execvp(args[0], args) == -1) {
 					perror(NULL);
-					return -1;
+					exit(1);
 				}
 				return -1;
 			default:

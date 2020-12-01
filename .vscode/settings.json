@@ -34,7 +34,8 @@
         "streambuf": "cpp",
         "utility": "cpp",
         "typeinfo": "cpp",
-        "list": "cpp"
+        "list": "cpp",
+        "cstddef": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }
