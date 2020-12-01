@@ -286,10 +286,42 @@ int ExeCmd(char* lineSize, char* cmdString, data &dat)
 		}
 	} 
 	// /*************************************************/
-	// else if (!strcmp(cmd, "bg")) 
-	// {
-	//	dat.checkandbreakprocess(dat.jobs);
-	// }
+	else if (!strcmp(cmd, "bg")) 
+	{
+		dat.checkandbreakprocess(dat.jobs);
+		if (num_arg == 1 || num_arg == 0)
+		{
+			std::list<job>::iterator tmp = dat.jobs.begin(); // if num_arg == 0
+
+			if(num_arg == 1)
+			{
+				tmp = dat.findjob(dat.jobs ,atoi(args[1]));
+			}
+			if(tmp == dat.jobs.end() || dat.jobs.size() == 0) 
+			{
+				// std::cout << "There isn't a process at the backgroung -- isnt such process" << std::endl;
+				return -1;
+			}
+			if(tmp->stopped == true)
+			{
+				if(kill(tmp->pid,SIGCONT) == -1)
+				{
+					perror(NULL);
+				}
+				tmp->stopped = false;
+			}
+			else
+			{
+				std::cout << "The process is already running" << std::endl;
+				return -1;
+			}
+		}
+		else
+		{
+			illegal_cmd = true;
+		}
+
+	}
 	// /*************************************************/
 	else if (!strcmp(cmd, "quit"))
 	{
